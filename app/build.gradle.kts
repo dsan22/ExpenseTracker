@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "rs.ac.ni.pmf.android.expensetracker"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "rs.ac.ni.pmf.android.expensetracker"
