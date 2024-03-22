@@ -38,7 +38,11 @@ import java.lang.Exception
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddExpense(modifier:Modifier= Modifier){
+fun AddExpense(
+    onConfirmClicked:()->Unit,
+    onBackClicked:()->Unit,
+    modifier:Modifier= Modifier
+){
     var description by remember { mutableStateOf("") }
     var expenseString by remember { mutableStateOf("") }
     var expense by remember { mutableStateOf(0.0)}
@@ -156,11 +160,16 @@ fun AddExpense(modifier:Modifier= Modifier){
             modifier = Modifier.fillMaxWidth(),
         ) {
 
-            Button(modifier =Modifier.fillMaxWidth().padding(start =  20.dp,end=20.dp, top = 5.dp),onClick = { println("test") }) {
+            Button(
+                modifier =Modifier.fillMaxWidth().padding(start =  20.dp,end=20.dp, top = 5.dp),
+                onClick = { onConfirmClicked() }
+            ) {
                 Text("Confirm")
             }
 
-            Button(modifier =Modifier.fillMaxWidth().padding(start =  20.dp,end=20.dp,top = 5.dp) , onClick = { } ) {
+            Button(
+                modifier =Modifier.fillMaxWidth().padding(start =  20.dp,end=20.dp,top = 5.dp) ,
+                onClick = { onBackClicked()} ) {
                 Text("Back")
             }
 
@@ -176,9 +185,12 @@ fun AddExpense(modifier:Modifier= Modifier){
 @Composable
 fun AddExpensePreview(){
     AddExpense(
-        Modifier
+        onBackClicked = {},
+        onConfirmClicked = {},
+        modifier = Modifier
             .fillMaxHeight()
-            .padding(10.dp))
+            .padding(10.dp)
+    )
 }
 
 

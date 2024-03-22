@@ -16,9 +16,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeFloatingActionButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -64,8 +66,12 @@ fun ExpenseItem(expense:Expense, modifier: Modifier = Modifier) {
        }
    }
 }
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExpenseList( modifier: Modifier = Modifier) {
+fun ExpenseList(
+    onAddExpenseClicked:()->Unit,
+    modifier: Modifier = Modifier
+) {
     val list= mutableListOf(
         Expense(Category.FOOD,"Dorucak",120.0),
         Expense(Category.BILLS,"Struja",2000.0),
@@ -76,24 +82,32 @@ fun ExpenseList( modifier: Modifier = Modifier) {
         list+=list
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize().padding(20.dp),
-        contentAlignment = Alignment.BottomEnd // Aligns the content to the bottom end (bottom right)
-    ) {
-        LargeFloatingActionButton(shape = CircleShape, onClick = { /*TODO*/ }) {
+    Scaffold(floatingActionButton = {
+        LargeFloatingActionButton(
+            shape = CircleShape,
+            onClick = {
+                onAddExpenseClicked()
+                println("Clicked +")
+            }
+        ) {
             Icon(Icons.Filled.Add, "Add new Expense")
         }
+    }) {
+            innerPadding->
+
+        Column(modifier= Modifier.padding(innerPadding)) {
+            LazyColumn(modifier = modifier) {
+                items(list) { expense ->
+                    ExpenseItem(expense = expense,modifier= Modifier
+                        .fillMaxWidth()
+                        .height(40.dp)
+                    )
+                    Divider(thickness = 1.dp)
+                }
+            }
     }
-  Column {
-      LazyColumn(modifier = modifier) {
-          items(list) { expense ->
-              ExpenseItem(expense = expense,modifier= Modifier
-                  .fillMaxWidth()
-                  .height(40.dp)
-              )
-              Divider(thickness = 1.dp)
-          }
-      }
+
+
 
   }
 }
@@ -111,6 +125,6 @@ fun ExpenseItemPreview() {
 @Composable
 fun ExpenseListPreview() {
     ExpenseTrackerTheme {
-        ExpenseList(modifier = Modifier.fillMaxHeight())
+        ExpenseList(onAddExpenseClicked = {} ,modifier = Modifier.fillMaxHeight())
     }
 }

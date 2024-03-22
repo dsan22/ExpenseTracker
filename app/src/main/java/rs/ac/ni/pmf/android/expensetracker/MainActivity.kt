@@ -13,7 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
 import rs.ac.ni.pmf.android.expensetracker.ui.AddExpense
+import rs.ac.ni.pmf.android.expensetracker.ui.AppNavigation
 import rs.ac.ni.pmf.android.expensetracker.ui.ExpenseList
 import rs.ac.ni.pmf.android.expensetracker.ui.theme.ExpenseTrackerTheme
 
@@ -27,7 +29,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ExpenseList(modifier = Modifier.fillMaxHeight().padding(5.dp))
+                   AppNavigation(navController = rememberNavController() )
                 }
             }
         }
