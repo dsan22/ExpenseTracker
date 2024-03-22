@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AddExpense(modifier = Modifier.fillMaxHeight().padding(5.dp))
+                    ExpenseList(modifier = Modifier.fillMaxHeight().padding(5.dp))
                 }
             }
         }
