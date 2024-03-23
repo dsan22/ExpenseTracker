@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,17 +32,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import rs.ac.ni.pmf.android.expensetracker.model.Category
 import rs.ac.ni.pmf.android.expensetracker.model.getIconFromCategory
 import rs.ac.ni.pmf.android.expensetracker.R
+import rs.ac.ni.pmf.android.expensetracker.model.Expense
 import java.lang.Exception
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddExpense(
-    onConfirmClicked:()->Unit,
+    onConfirmClicked:(expense:Expense)->Unit,
     onBackClicked:()->Unit,
-    modifier:Modifier= Modifier
+    modifier:Modifier= Modifier,
 ){
     var description by remember { mutableStateOf("") }
     var expenseString by remember { mutableStateOf("") }
@@ -94,7 +97,7 @@ fun AddExpense(
                 .clickable {
                     expanded = true
                 },
-            colors =  TextFieldDefaults.textFieldColors(
+            colors =  TextFieldDefaults.colors(
                 disabledTextColor = Color.Black
             )
 
@@ -161,14 +164,21 @@ fun AddExpense(
         ) {
 
             Button(
-                modifier =Modifier.fillMaxWidth().padding(start =  20.dp,end=20.dp, top = 5.dp),
-                onClick = { onConfirmClicked() }
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp, top = 5.dp),
+                onClick = {
+                    val newExpense= Expense(category = selectedCategory, description = description, expense = expense)
+                    onConfirmClicked(newExpense)
+                }
             ) {
                 Text("Confirm")
             }
 
             Button(
-                modifier =Modifier.fillMaxWidth().padding(start =  20.dp,end=20.dp,top = 5.dp) ,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp, top = 5.dp) ,
                 onClick = { onBackClicked()} ) {
                 Text("Back")
             }
