@@ -15,6 +15,12 @@ object AppViewModelProvider {
         initializer {
             ExpenseListViewModel(expenseApplication().container.expenseRepository)
         }
+        initializer {
+            IncomeListViewModel(expenseApplication().container.incomeRepository)
+        }
+        initializer {
+            IncomeEntryViewModel(expenseApplication().container.incomeRepository)
+        }
     }
 }
 

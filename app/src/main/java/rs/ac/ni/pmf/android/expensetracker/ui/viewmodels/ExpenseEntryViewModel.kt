@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import rs.ac.ni.pmf.android.expensetracker.data.ExpenseRepository
+import rs.ac.ni.pmf.android.expensetracker.data.repository.ExpenseRepository
 import rs.ac.ni.pmf.android.expensetracker.model.Category
 import rs.ac.ni.pmf.android.expensetracker.model.Expense
 import java.text.DateFormat
@@ -41,8 +41,7 @@ class ExpenseEntryViewModel(private val expenseRepository: ExpenseRepository) : 
         private set
 
     fun updateUiState(expenseDetails: ExpenseDetails) {
-        expenseUiState =
-            expenseUiState.copy(
+        expenseUiState = expenseUiState.copy(
                 expenseDetails = expenseDetails,
                 isEntryValid = validateInput(expenseDetails)
             )
@@ -50,22 +49,13 @@ class ExpenseEntryViewModel(private val expenseRepository: ExpenseRepository) : 
 
     suspend fun saveExpense() {
         if (validateInput()) {
-            println(expenseUiState.expenseDetails.toExpense().description + " " + expenseUiState.expenseDetails.toExpense().expense)
             expenseRepository.insertExpense(expenseUiState.expenseDetails.toExpense())
-        } else {
-            println(
-                "SAVE" + "\n" +
-                        expenseUiState.expenseDetails.expense + "\n" +
-                        expenseUiState.expenseDetails.description + "\n" +
-                        expenseUiState.expenseDetails.category + "\n"
-            )
         }
-
     }
 
     private fun validateInput(uiState: ExpenseDetails = expenseUiState.expenseDetails): Boolean {
         return with(uiState) {
-            description.isNotBlank() && expense.isNotBlank() && category.isNotBlank() //&& date.isNotBlank()
+            description.isNotBlank() && expense.isNotBlank() && category.isNotBlank() && date.isNotBlank()
         }
     }
 }

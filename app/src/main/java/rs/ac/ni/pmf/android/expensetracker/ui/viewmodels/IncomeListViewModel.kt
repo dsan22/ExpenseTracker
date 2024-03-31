@@ -7,19 +7,21 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import rs.ac.ni.pmf.android.expensetracker.data.repository.ExpenseRepository
+import rs.ac.ni.pmf.android.expensetracker.data.repository.IncomeRepository
 import rs.ac.ni.pmf.android.expensetracker.model.Expense
+import rs.ac.ni.pmf.android.expensetracker.model.Income
 
-data class ExpenseListUiState(
-    val expenses: List<Expense> = listOf()
+data class IncomeListUiState(
+    val income: List<Income> = listOf()
 )
 
-class ExpenseListViewModel(private val expenseRepository: ExpenseRepository) : ViewModel() {
+class IncomeListViewModel(private val incomeRepository: IncomeRepository) : ViewModel() {
     private val timeout = 5_000L
-    val uiState: StateFlow<ExpenseListUiState> =
-        expenseRepository.getAllExpensesStream().map { ExpenseListUiState(it) }
+    val uiState: StateFlow<IncomeListUiState> =
+        incomeRepository.getAllIncomeStream().map { IncomeListUiState(it) }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(timeout),
-                initialValue = ExpenseListUiState()
+                initialValue = IncomeListUiState()
             )
 }

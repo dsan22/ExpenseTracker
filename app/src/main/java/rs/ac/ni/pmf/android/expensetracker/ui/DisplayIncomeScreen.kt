@@ -28,33 +28,24 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import rs.ac.ni.pmf.android.expensetracker.model.Category
 import rs.ac.ni.pmf.android.expensetracker.model.Expense
+import rs.ac.ni.pmf.android.expensetracker.model.Income
 import rs.ac.ni.pmf.android.expensetracker.model.getIconFromCategory
 import rs.ac.ni.pmf.android.expensetracker.ui.theme.ExpenseTrackerTheme
 import rs.ac.ni.pmf.android.expensetracker.ui.viewmodels.AppViewModelProvider
-import rs.ac.ni.pmf.android.expensetracker.ui.viewmodels.ExpenseListViewModel
+import rs.ac.ni.pmf.android.expensetracker.ui.viewmodels.BottomBar
+import rs.ac.ni.pmf.android.expensetracker.ui.viewmodels.IncomeListViewModel
+
 
 @Composable
-fun ExpenseItem(expense: Expense, modifier: Modifier = Modifier) {
+fun IncomeItem(income: Income, modifier: Modifier = Modifier) {
     Row(modifier = modifier) {
-        Column(
-            modifier = Modifier
-                .weight(0.1f)
-                .fillMaxHeight()
-                .padding(5.dp),
-            verticalArrangement = Arrangement.Center
-        ) {
-            Image(
-                painter = painterResource(id = getIconFromCategory(expense.category)),
-                contentDescription = expense.category.toString()
-            )
-        }
         Column(
             modifier = Modifier
                 .weight(0.4f)
                 .fillMaxHeight(),
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = expense.description)
+            Text(text = income.description)
         }
         Column(
             modifier = Modifier
@@ -62,7 +53,7 @@ fun ExpenseItem(expense: Expense, modifier: Modifier = Modifier) {
                 .fillMaxHeight(),
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = expense.expense.toString())
+            Text(text = income.income.toString())
         }
         Column(
             modifier = Modifier
@@ -70,35 +61,23 @@ fun ExpenseItem(expense: Expense, modifier: Modifier = Modifier) {
                 .fillMaxHeight(),
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = expense.date)
+            Text(text = income.date)
         }
     }
 }
 
 @Composable
-fun ExpenseList(
-    list: List<Expense>,
-    onAddExpenseClicked: () -> Unit,
+fun IncomeList(
+    onAddClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ExpenseListViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    list: List<Income>,
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-
-    Scaffold(floatingActionButton = {
-        LargeFloatingActionButton(
-            shape = CircleShape,
-            onClick = {
-                onAddExpenseClicked()
-            }
-        ) {
-            Icon(Icons.Filled.Add, "Add new Expense")
-        }
-    }) { innerPadding ->
+    Scaffold() { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             LazyColumn(modifier = modifier) {
-                items(uiState.expenses) { expense ->
-                    ExpenseItem(
-                        expense = expense, modifier = Modifier
+                items(list) { income ->
+                    IncomeItem(
+                        income = income, modifier = Modifier
                             .fillMaxWidth()
                             .height(40.dp)
                     )
@@ -110,13 +89,49 @@ fun ExpenseList(
 
     }
 }
+@Composable
+fun IncomeListScreen(
+    onAddClicked: () -> Unit,
+    onStatisticsCLick:()->Unit,
+    onIncomeClick:()->Unit,
+    onExpenseClick:()->Unit,
+    modifier: Modifier = Modifier,
+    viewModel: IncomeListViewModel = viewModel(factory = AppViewModelProvider.Factory)
+){
+    val uiState by viewModel.uiState.collectAsState()
+
+    Scaffold(
+        bottomBar = {
+            BottomBar(
+                modifier=Modifier.fillMaxWidth(),
+                onStatisticsCLick = onStatisticsCLick,
+                onIncomeClick = onIncomeClick,
+                onExpenseClick = onExpenseClick
+            )
+        },
+        floatingActionButton = {
+            LargeFloatingActionButton(
+                shape = CircleShape,
+                onClick = {
+                    onAddClicked()
+                }
+            ) {
+                Icon(Icons.Filled.Add, "Add new Expense")
+            }
+        }
+    ) {
+        IncomeList(onAddClicked = onAddClicked, list = uiState.income, modifier = modifier.padding(it) )
+    }
+
+
+}
 
 @Preview(showBackground = true)
 @Composable
-fun ExpenseItemPreview() {
+fun IncomeItemPreview() {
     ExpenseTrackerTheme {
-        ExpenseItem(
-            expense = Expense(1, Category.CLOTHS, "test", 125.0, date = "2020-10-10"),
+        IncomeItem(
+            income = Income(1, "test", 125.0, date = "2020-10-10"),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(40.dp)
@@ -126,20 +141,15 @@ fun ExpenseItemPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun ExpenseListPreview() {
-    val list = mutableListOf(
-        Expense(1, Category.FOOD, "Dorucak", 120.0),
-        Expense(2, Category.BILLS, "Struja", 2000.0),
-        Expense(3, Category.BILLS, "Internet", 2500.0),
-        Expense(4, Category.CLOTHS, "Patike", 3500.0),
-    )
-    for (i in 1..5) {
-        list += list
-    }
-    ExpenseTrackerTheme {
-        ExpenseList(
-            list = list,
-            onAddExpenseClicked = {},
-            modifier = Modifier.fillMaxHeight())
+fun IncomeListPreview() {
+    ExpenseTrackerTheme { IncomeList(
+        onAddClicked = {},
+        list = listOf(
+            Income(1,"Plata",20000.0,"March 20, 2024"),
+            Income(1,"Plata",40000.0,"March 25, 2024"),
+            Income(1,"Stipendija",6000.0,"March 20, 2024"),
+            Income(1,"Plata",30000.0,"March 20, 2024")
+        ),
+        modifier = Modifier.fillMaxHeight())
     }
 }

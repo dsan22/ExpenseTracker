@@ -1,4 +1,4 @@
-package rs.ac.ni.pmf.android.expensetracker.data
+package rs.ac.ni.pmf.android.expensetracker.data.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
