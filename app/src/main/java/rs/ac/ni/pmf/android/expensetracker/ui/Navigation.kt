@@ -11,31 +11,29 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import rs.ac.ni.pmf.android.expensetracker.ui.viewmodels.AppViewModel
 
-enum class Screans(val title:String){
+enum class Screens(val title: String) {
     EXPENSES("Expense list"),
     ADD_EXPENSE("Add expense")
 }
+
 @Composable
 fun AppNavigation(
-    navController:NavHostController,
-    appViewModel: AppViewModel= viewModel()
-){
+    navController: NavHostController,
+    appViewModel: AppViewModel = viewModel()
+) {
     val uiState by appViewModel.uiState.collectAsState()
-    NavHost(navController =navController , startDestination = Screans.EXPENSES.title  ){
-        composable(route = Screans.EXPENSES.title) {
+    NavHost(navController = navController, startDestination = Screens.EXPENSES.title) {
+        composable(route = Screens.EXPENSES.title) {
             ExpenseList(
-                list=uiState.expenses,
-                onAddExpenseClicked ={ navController.navigate(Screans.ADD_EXPENSE.title)} ,
+                list = uiState.expenses,
+                onAddExpenseClicked = { navController.navigate(Screens.ADD_EXPENSE.title) },
                 modifier = Modifier.fillMaxHeight())
         }
-        composable(route = Screans.ADD_EXPENSE.title) {
+        composable(route = Screens.ADD_EXPENSE.title) {
             AddExpense(
-                onConfirmClicked = {
-                    appViewModel.addExpense(it)
-                    navController.navigate(Screans.EXPENSES.title)
-                                   },
-                 onBackClicked = { navController.navigate(Screans.EXPENSES.title) },
+                navigateBack = { navController.popBackStack() },
                 modifier = Modifier
                     .fillMaxHeight()
                     .padding(10.dp)

@@ -9,9 +9,9 @@ enum class Category {
     HOUSEHOLD_ITEMS
 }
 
-fun getIconFromCategory(c:Category): Int {
-    return when(c){
-        Category.BILLS-> R.drawable.bills
+fun getIconFromCategory(c: Category): Int {
+    return when (c) {
+        Category.BILLS -> R.drawable.bills
         Category.FOOD -> R.drawable.food
         Category.CLOTHS -> R.drawable.clothing
         Category.HOUSEHOLD_ITEMS -> R.drawable.household_items
