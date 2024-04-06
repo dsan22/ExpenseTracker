@@ -1,6 +1,5 @@
 package rs.ac.ni.pmf.android.expensetracker.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,17 +21,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import rs.ac.ni.pmf.android.expensetracker.model.Category
-import rs.ac.ni.pmf.android.expensetracker.model.Expense
 import rs.ac.ni.pmf.android.expensetracker.model.Income
-import rs.ac.ni.pmf.android.expensetracker.model.getIconFromCategory
 import rs.ac.ni.pmf.android.expensetracker.ui.theme.ExpenseTrackerTheme
 import rs.ac.ni.pmf.android.expensetracker.ui.viewmodels.AppViewModelProvider
-import rs.ac.ni.pmf.android.expensetracker.ui.viewmodels.BottomBar
 import rs.ac.ni.pmf.android.expensetracker.ui.viewmodels.IncomeListViewModel
 
 

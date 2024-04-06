@@ -21,6 +21,12 @@ object AppViewModelProvider {
         initializer {
             IncomeEntryViewModel(expenseApplication().container.incomeRepository)
         }
+        initializer {
+            StatisticsViewModel(
+                expenseRepository =expenseApplication().container.expenseRepository,
+                incomeRepository =expenseApplication().container.incomeRepository
+            )
+        }
     }
 }
 

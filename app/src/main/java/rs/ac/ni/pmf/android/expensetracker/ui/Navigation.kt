@@ -2,13 +2,9 @@ package rs.ac.ni.pmf.android.expensetracker.ui
 
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -37,7 +33,9 @@ fun AppNavigation(
         composable(route = Screens.ADD_EXPENSE.title) {
             AddExpense(
                 navigateBack = { navController.popBackStack() },
-                modifier = Modifier.fillMaxHeight().padding(10.dp)
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(10.dp)
             )
         }
         composable(route=Screens.INCOME.title){
@@ -46,7 +44,9 @@ fun AppNavigation(
                 onExpenseClick ={navController.navigate(Screens.EXPENSES.title)} ,
                 onIncomeClick = {},
                 onStatisticsCLick = {navController.navigate(Screens.STATISTICS.title)},
-                modifier = Modifier.fillMaxHeight().padding(10.dp))
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(10.dp))
         }
         composable(route = Screens.ADD_INCOME.title) {
             AddIncome(
@@ -57,7 +57,11 @@ fun AppNavigation(
             )
         }
         composable(route=Screens.STATISTICS.title){
-            Text(text = "work in progress")
+            StatisticsScreen(
+                onExpenseClick ={navController.navigate(Screens.EXPENSES.title)} ,
+                onIncomeClick = {navController.navigate(Screens.INCOME.title)},
+                onStatisticsCLick = {},
+            )
         }
     }
 }

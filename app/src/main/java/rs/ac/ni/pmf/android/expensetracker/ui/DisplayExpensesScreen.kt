@@ -31,7 +31,6 @@ import rs.ac.ni.pmf.android.expensetracker.model.Expense
 import rs.ac.ni.pmf.android.expensetracker.model.getIconFromCategory
 import rs.ac.ni.pmf.android.expensetracker.ui.theme.ExpenseTrackerTheme
 import rs.ac.ni.pmf.android.expensetracker.ui.viewmodels.AppViewModelProvider
-import rs.ac.ni.pmf.android.expensetracker.ui.viewmodels.BottomBar
 import rs.ac.ni.pmf.android.expensetracker.ui.viewmodels.ExpenseListViewModel
 
 @Composable
