@@ -1,18 +1,28 @@
 package rs.ac.ni.pmf.android.expensetracker.ui
 
+import android.graphics.Color
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.mikephil.charting.charts.BarChart
@@ -22,6 +32,7 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import rs.ac.ni.pmf.android.expensetracker.ui.viewmodels.AppViewModelProvider
 import rs.ac.ni.pmf.android.expensetracker.ui.viewmodels.StatisticsViewModel
+import kotlin.math.abs
 
 
 class MonthAxisValueFormatter() : com.github.mikephil.charting.formatter.ValueFormatter() {
@@ -60,10 +71,16 @@ fun LineGraph(
         modifier = modifier.fillMaxWidth(),
         factory = { context ->
             val chart = BarChart(context)  // Initialise the chart
-            val entries: List<BarEntry> = xData.zip(yData) { x, y -> BarEntry(x.toFloat(), y.toFloat()) }  // Convert the x and y data into entries
+
+
+            val colors = yData.map { if (it < 0) Color.RED else Color.CYAN }
+            val absYData=yData.map { it-> abs(it) }
+            val entries: List<BarEntry> = xData.zip(absYData) { x, y -> BarEntry(x.toFloat(), y.toFloat()) }
             val dataSet = BarDataSet(entries, dataLabel).apply {
                 //setDrawValues(false)
                 this.valueTextSize=13f
+                this.colors = colors
+
             }  // Create a dataset of entries
             chart.data = BarData(dataSet)  // Pass the dataset to the chart
 
@@ -101,6 +118,28 @@ fun StatisticsScreen(
     val xExpenseData=expenseData.keys.toList()
     val yExpenseData=expenseData.values.toList()
 
+    var difCalculated by remember { mutableStateOf(false) }
+    val difMap = mutableMapOf<Int, Double>()
+
+    for ((key, value) in incomeData) {
+        difMap[key] = value
+    }
+
+    for ((key, value) in expenseData) {
+        if (difMap.containsKey(key)) {
+            Log.d("myTest",key.toString())
+            Log.d("myTest", difMap[key].toString())
+            difMap[key] = difMap[key]!! - value
+            Log.d("myTest", difMap[key].toString())
+        } else {
+            difMap[key] = value
+        }
+    }
+    val xDiffData=difMap.keys.toList()
+    val yDiffData=difMap.values.toList()
+    difCalculated=true
+
+
 
 
     Scaffold(
@@ -112,15 +151,36 @@ fun StatisticsScreen(
             )
         }
     ) {
-        Column {
+        Column(
+            modifier = Modifier.verticalScroll(rememberScrollState())
+        )  {
             if(xIncomeData.isNotEmpty()&&yIncomeData.isNotEmpty()){
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    fontSize = 23.sp,
+                    text = "Income")
                 LineGraph(xData =xIncomeData, yData = yIncomeData , dataLabel ="", modifier = Modifier
                     .padding(it)
                     .height(300.dp) )
             }
-            Log.d("graph", xExpenseData.toString())
             if(xExpenseData.isNotEmpty()&&yExpenseData.isNotEmpty()){
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    fontSize = 23.sp,
+                    text = "Expenses")
                 LineGraph(xData =xExpenseData, yData = yExpenseData , dataLabel ="", modifier = Modifier
+                    .padding(it)
+                    .height(300.dp) )
+            }
+            if(xDiffData.isNotEmpty()&&yDiffData.isNotEmpty()&&difCalculated){
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    fontSize = 23.sp,
+                    text = "Difference in income and expenses")
+                LineGraph(xData =xDiffData, yData = yDiffData , dataLabel ="", modifier = Modifier
                     .padding(it)
                     .height(300.dp) )
             }
