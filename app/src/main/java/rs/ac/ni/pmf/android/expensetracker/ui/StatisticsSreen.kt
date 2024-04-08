@@ -1,5 +1,6 @@
 package rs.ac.ni.pmf.android.expensetracker.ui
 
+import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -30,25 +32,27 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import rs.ac.ni.pmf.android.expensetracker.R
 import rs.ac.ni.pmf.android.expensetracker.ui.viewmodels.AppViewModelProvider
 import rs.ac.ni.pmf.android.expensetracker.ui.viewmodels.StatisticsViewModel
 import kotlin.math.abs
 
 
-class MonthAxisValueFormatter() : com.github.mikephil.charting.formatter.ValueFormatter() {
+class MonthAxisValueFormatter(context: Context) : com.github.mikephil.charting.formatter.ValueFormatter() {
      private val monthLabels: List<String> = listOf(
-         "January",
-         "February",
-         "March",
-         "April",
-         "May",
-         "Jun",
-         "July",
-         "August",
-         "September",
-         "October",
-         "November",
-         "December",
+         context.getString( R.string.january),
+         context.getString( R.string.february),
+         context.getString( R.string.march),
+         context.getString( R.string.april),
+         context.getString( R.string.may),
+         context.getString( R.string.jun),
+         context.getString( R.string.july),
+         context.getString( R.string.august),
+         context.getString( R.string.september),
+         context.getString( R.string.october),
+         context.getString( R.string.november),
+         context.getString( R.string.december),
+
          )
     override fun getFormattedValue(value: Float): String {
         val index = value.toInt()
@@ -91,7 +95,7 @@ fun LineGraph(
             chart.xAxis.position=XAxis.XAxisPosition.BOTTOM
             chart.xAxis.textSize=15f
             chart.xAxis.granularity=1f
-            chart.xAxis.valueFormatter=MonthAxisValueFormatter()
+            chart.xAxis.valueFormatter=MonthAxisValueFormatter(context)
 
             // Refresh and return the chart
             chart.invalidate()
@@ -155,7 +159,7 @@ fun StatisticsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
                     fontSize = 23.sp,
-                    text = "Income")
+                    text = stringResource( R.string.income))
                 LineGraph(xData =xIncomeData, yData = yIncomeData , dataLabel ="", modifier = Modifier
                     .padding(8.dp)
                     .height(300.dp) )
@@ -165,7 +169,7 @@ fun StatisticsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
                     fontSize = 23.sp,
-                    text = "Expenses")
+                    text = stringResource( R.string.expense))
                 LineGraph(xData =xExpenseData, yData = yExpenseData , dataLabel ="", modifier = Modifier
                     .padding(8.dp)
                     .height(300.dp) )
@@ -175,7 +179,7 @@ fun StatisticsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
                     fontSize = 23.sp,
-                    text = "Difference in income and expenses")
+                    text = stringResource( R.string.diff_in_income_and_expense))
                 LineGraph(xData =xDiffData, yData = yDiffData , dataLabel ="", modifier = Modifier
                     .padding(8.dp)
                     .height(300.dp) )

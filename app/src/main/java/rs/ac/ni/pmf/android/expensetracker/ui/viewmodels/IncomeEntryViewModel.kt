@@ -13,6 +13,7 @@ import rs.ac.ni.pmf.android.expensetracker.model.Income
 import java.text.DateFormat
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 
 data class IncomeUiState(
@@ -24,7 +25,7 @@ data class IncomeDetails(
     val id: Int = 0,
     val description: String = "",
     val expense: String = "",
-    val date: String = DateFormat.getDateInstance()
+    val date: String = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.ENGLISH)
         .format(Date(Calendar.getInstance().timeInMillis))
 )
 

@@ -10,6 +10,7 @@ import rs.ac.ni.pmf.android.expensetracker.model.Expense
 import java.text.DateFormat
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 
 data class ExpenseUiState(
@@ -22,7 +23,7 @@ data class ExpenseDetails(
     val category: String = "FOOD",
     val description: String = "",
     val expense: String = "",
-    val date: String = DateFormat.getDateInstance()
+    val date: String = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.ENGLISH)
         .format(Date(Calendar.getInstance().timeInMillis))
 )
 

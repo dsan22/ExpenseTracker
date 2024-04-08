@@ -12,6 +12,7 @@ import java.lang.IllegalArgumentException
 import java.text.DateFormat
 import java.time.Month
 import java.util.Date
+import java.util.Locale
 
 data class IncomeByMonthUiState(
     val incomeByMonth:MutableMap <Int,Double>,
@@ -63,7 +64,7 @@ class StatisticsViewModel(private val incomeRepository: IncomeRepository,private
         )
 
     private fun getDate(dateString: String): Date {
-        val dateFormat = DateFormat.getDateInstance()
+        val dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.ENGLISH)
         return dateFormat.parse(dateString)
             ?: throw IllegalArgumentException("Date is not in valid format")
     }

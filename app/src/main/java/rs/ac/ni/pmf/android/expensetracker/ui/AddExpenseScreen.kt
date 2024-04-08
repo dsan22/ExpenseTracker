@@ -38,11 +38,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
+import rs.ac.ni.pmf.android.expensetracker.R
 import rs.ac.ni.pmf.android.expensetracker.model.Category
 import rs.ac.ni.pmf.android.expensetracker.model.getIconFromCategory
 import rs.ac.ni.pmf.android.expensetracker.ui.viewmodels.AppViewModelProvider
@@ -51,6 +53,7 @@ import rs.ac.ni.pmf.android.expensetracker.ui.viewmodels.ExpenseEntryViewModel
 import java.text.DateFormat
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 @Composable
 fun AddExpense(
@@ -75,7 +78,7 @@ fun AddExpense(
             onValueChange = {
                 viewModel.updateUiState(expenseDetails.copy(description = it))
             },
-            label = { Text("Description") },
+            label = { Text(stringResource( R.string.description)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -85,7 +88,7 @@ fun AddExpense(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             value = expenseDetails.expense,
             onValueChange = { viewModel.updateUiState(expenseDetails.copy(expense = it)) },
-            label = { Text("Expense") },
+            label = { Text(stringResource( R.string.expense)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -109,7 +112,7 @@ fun AddExpense(
                     navigateBack()
                 }
             ) {
-                Text("Confirm")
+                Text(stringResource( R.string.confirm))
             }
 
             Button(
@@ -118,7 +121,7 @@ fun AddExpense(
                     .padding(start = 20.dp, end = 20.dp, top = 5.dp),
                 onClick = { navigateBack() })
             {
-                Text("Back")
+                Text(stringResource( R.string.back))
             }
         }
     }
@@ -139,7 +142,7 @@ fun CategoryDropDownMenu(category: String, onSelect: (String) -> Unit) {
                     modifier = Modifier.height(30.dp),
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Text(text = "Category: $category", color = Color.Black)
+                    Text(text = stringResource( R.string.category)+ ": $category", color = Color.Black)
                 }
 
                 Spacer(modifier = Modifier.width(10.dp))
@@ -240,14 +243,14 @@ fun MyDatePickerDialogCalendar(
                 onDismiss()
             }
             ) {
-                Text(text = "OK")
+                Text(text = stringResource( R.string.ok))
             }
         },
         dismissButton = {
             Button(onClick = {
                 onDismiss()
             }) {
-                Text(text = "Cancel")
+                Text(text = stringResource( R.string.cancel))
             }
         }
     ) {
@@ -293,7 +296,7 @@ fun MyDatePickerDialog(date: String, onDateSelected: (String) -> Unit) {
 }
 
 private fun convertMillisToDate(millis: Long): String {
-    val formatter = DateFormat.getDateInstance()
+    val formatter = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.ENGLISH)
     return formatter.format(Date(millis))
 }
 

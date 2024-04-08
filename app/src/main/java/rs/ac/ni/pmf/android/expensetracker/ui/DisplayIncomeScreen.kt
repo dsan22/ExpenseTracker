@@ -21,9 +21,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import rs.ac.ni.pmf.android.expensetracker.R
 import rs.ac.ni.pmf.android.expensetracker.model.Income
 import rs.ac.ni.pmf.android.expensetracker.ui.theme.ExpenseTrackerTheme
 import rs.ac.ni.pmf.android.expensetracker.ui.viewmodels.AppViewModelProvider
@@ -62,12 +64,37 @@ fun IncomeItem(income: Income, modifier: Modifier = Modifier) {
 
 @Composable
 fun IncomeList(
-    onAddClicked: () -> Unit,
     modifier: Modifier = Modifier,
     list: List<Income>,
 ) {
     Scaffold() { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
+            Row(modifier=Modifier.height(40.dp)) {
+                Column(
+                    modifier = Modifier
+                        .weight(0.4f)
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(text = stringResource( R.string.description))
+                }
+                Column(
+                    modifier = Modifier
+                        .weight(0.3f)
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(text = stringResource( R.string.income))
+                }
+                Column(
+                    modifier = Modifier
+                        .weight(0.3f)
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(text = stringResource( R.string.date))
+                }
+            }
             LazyColumn(modifier = modifier) {
                 items(list) { income ->
                     IncomeItem(
@@ -114,7 +141,7 @@ fun IncomeListScreen(
             }
         }
     ) {
-        IncomeList(onAddClicked = onAddClicked, list = uiState.income, modifier = modifier.padding(it) )
+        IncomeList( list = uiState.income, modifier = modifier.padding(it) )
     }
 
 
@@ -137,7 +164,6 @@ fun IncomeItemPreview() {
 @Composable
 fun IncomeListPreview() {
     ExpenseTrackerTheme { IncomeList(
-        onAddClicked = {},
         list = listOf(
             Income(1,"Plata",20000.0,"March 20, 2024"),
             Income(1,"Plata",40000.0,"March 25, 2024"),

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ExpenseTracker</string>
+    <string name="income">Zarada</string>
+    <string name="expense">Trošak</string>
+    <string name="diff_in_income_and_expense">Razlika u zaradi i potrošnji</string>
+    <string name="january">Januar</string>
+    <string name="february">Februar</string>
+    <string name="march">Mart</string>
+    <string name="april">April</string>
+    <string name="may">Maj</string>
+    <string name="jun">Jun</string>
+    <string name="july">Jul</string>
+    <string name="august">Avgust</string>
+    <string name="september">Septembar</string>
+    <string name="october">Oktobar</string>
+    <string name="november">Novembar</string>
+    <string name="december">Decembar</string>
+    <string name="category">Kategorija</string>
+    <string name="description">Opis</string>
+    <string name="date">Datum</string>
+    <string name="confirm">Potvrdi</string>
+    <string name="back">Nazad</string>
+    <string name="cancel">Odustani</string>
+    <string name="ok">OK</string>
+</resources>

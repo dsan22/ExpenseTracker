@@ -39,11 +39,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
+import rs.ac.ni.pmf.android.expensetracker.R
 import rs.ac.ni.pmf.android.expensetracker.model.Category
 import rs.ac.ni.pmf.android.expensetracker.model.getIconFromCategory
 import rs.ac.ni.pmf.android.expensetracker.ui.viewmodels.AppViewModelProvider
@@ -75,7 +77,7 @@ fun AddIncome(
             onValueChange = {
                 viewModel.updateUiState(incomeDetails.copy(description = it))
             },
-            label = { Text("Description") },
+            label = { Text(stringResource( R.string.description)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -85,7 +87,7 @@ fun AddIncome(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             value = incomeDetails.expense,
             onValueChange = { viewModel.updateUiState(incomeDetails.copy(expense = it)) },
-            label = { Text("Expense") },
+            label = { Text(stringResource( R.string.income)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -109,7 +111,7 @@ fun AddIncome(
                     navigateBack()
                 }
             ) {
-                Text("Confirm")
+                Text(stringResource( R.string.confirm))
             }
 
             Button(
@@ -118,7 +120,7 @@ fun AddIncome(
                     .padding(start = 20.dp, end = 20.dp, top = 5.dp),
                 onClick = { navigateBack() })
             {
-                Text("Back")
+                Text(stringResource( R.string.back))
             }
         }
     }
