@@ -9,9 +9,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -109,6 +115,7 @@ fun StatisticsScreen(
     onStatisticsCLick:()->Unit,
     onIncomeClick:()->Unit,
     onExpenseClick:()->Unit,
+    windowSize: WindowWidthSizeClass,
     viewModel:StatisticsViewModel= viewModel(factory = AppViewModelProvider.Factory) )
 {
     val incomeUiState by viewModel.incomeUiState.collectAsState()
@@ -142,52 +149,53 @@ fun StatisticsScreen(
 
 
 
-    Scaffold(
-        bottomBar = {
-            BottomBar(
-                onStatisticsCLick = onStatisticsCLick,
-                onIncomeClick = onIncomeClick,
-                onExpenseClick = onExpenseClick
-            )
-        }
+
+
+    DynamicMenu(
+        onStatisticsCLick = onStatisticsCLick,
+        onIncomeClick = onIncomeClick,
+        onExpenseClick = onExpenseClick,
+        windowSize = windowSize
     ) {
-        Column(
-            modifier = Modifier.verticalScroll(rememberScrollState()).padding(it)
-        )  {
-            if(xIncomeData.isNotEmpty()&&yIncomeData.isNotEmpty()){
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    fontSize = 23.sp,
-                    text = stringResource( R.string.income))
-                LineGraph(xData =xIncomeData, yData = yIncomeData , dataLabel ="", modifier = Modifier
-                    .padding(8.dp)
-                    .height(300.dp) )
+        Scaffold(
+        ) {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()).padding(it)
+            )  {
+                if(xIncomeData.isNotEmpty()&&yIncomeData.isNotEmpty()){
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        fontSize = 23.sp,
+                        text = stringResource( R.string.income))
+                    LineGraph(xData =xIncomeData, yData = yIncomeData , dataLabel ="", modifier = Modifier
+                        .padding(8.dp)
+                        .height(300.dp) )
+                }
+                if(xExpenseData.isNotEmpty()&&yExpenseData.isNotEmpty()){
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        fontSize = 23.sp,
+                        text = stringResource( R.string.expense))
+                    LineGraph(xData =xExpenseData, yData = yExpenseData , dataLabel ="", modifier = Modifier
+                        .padding(8.dp)
+                        .height(300.dp) )
+                }
+                if(xDiffData.isNotEmpty()&&yDiffData.isNotEmpty()&&difCalculated){
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        fontSize = 23.sp,
+                        text = stringResource( R.string.diff_in_income_and_expense))
+                    LineGraph(xData =xDiffData, yData = yDiffData , dataLabel ="", modifier = Modifier
+                        .padding(8.dp)
+                        .height(300.dp) )
+                }
             }
-            if(xExpenseData.isNotEmpty()&&yExpenseData.isNotEmpty()){
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    fontSize = 23.sp,
-                    text = stringResource( R.string.expense))
-                LineGraph(xData =xExpenseData, yData = yExpenseData , dataLabel ="", modifier = Modifier
-                    .padding(8.dp)
-                    .height(300.dp) )
-            }
-            if(xDiffData.isNotEmpty()&&yDiffData.isNotEmpty()&&difCalculated){
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    fontSize = 23.sp,
-                    text = stringResource( R.string.diff_in_income_and_expense))
-                LineGraph(xData =xDiffData, yData = yDiffData , dataLabel ="", modifier = Modifier
-                    .padding(8.dp)
-                    .height(300.dp) )
-            }
+
         }
-
     }
-
 
 
 }

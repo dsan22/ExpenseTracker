@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,10 +25,12 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -58,6 +61,7 @@ import java.util.Locale
 @Composable
 fun AddExpense(
     navigateBack: () -> Unit,
+    windowSize: WindowWidthSizeClass,
     modifier: Modifier = Modifier,
     viewModel: ExpenseEntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
@@ -97,33 +101,66 @@ fun AddExpense(
         MyDatePickerDialog(date = expenseDetails.date) {
             viewModel.updateUiState(expenseDetails.copy(date = it))
         }
-
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 20.dp, end = 20.dp, top = 5.dp),
-                onClick = {
-                    coroutineScope.launch {
-                        viewModel.saveExpense()
+        when (windowSize) {
+            WindowWidthSizeClass.Compact -> {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 20.dp, end = 20.dp, top = 5.dp),
+                        onClick = {
+                            coroutineScope.launch {
+                                viewModel.saveExpense()
+                            }
+                            navigateBack()
+                        }
+                    ) {
+                        Text(stringResource( R.string.confirm))
                     }
-                    navigateBack()
-                }
-            ) {
-                Text(stringResource( R.string.confirm))
-            }
 
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 20.dp, end = 20.dp, top = 5.dp),
-                onClick = { navigateBack() })
-            {
-                Text(stringResource( R.string.back))
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 20.dp, end = 20.dp, top = 5.dp),
+                        onClick = { navigateBack() })
+                    {
+                        Text(stringResource( R.string.back))
+                    }
+                }
+            }
+            WindowWidthSizeClass.Medium, WindowWidthSizeClass.Expanded -> {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Button(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 20.dp, end = 20.dp, top = 5.dp),
+                        onClick = {
+                            coroutineScope.launch {
+                                viewModel.saveExpense()
+                            }
+                            navigateBack()
+                        }
+                    ) {
+                        Text(stringResource( R.string.confirm))
+                    }
+
+                    Button(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 20.dp, end = 20.dp, top = 5.dp),
+                        onClick = { navigateBack() })
+                    {
+                        Text(stringResource( R.string.back))
+                    }
+                }
             }
         }
+
+
     }
 }
 
@@ -314,6 +351,7 @@ fun DatePreview() {
 fun AddExpensePreview() {
     AddExpense(
         navigateBack = {},
+        windowSize= WindowWidthSizeClass.Compact,
         modifier = Modifier
             .fillMaxHeight()
             .padding(10.dp)

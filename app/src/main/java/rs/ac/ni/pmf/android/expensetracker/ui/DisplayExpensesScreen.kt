@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -138,36 +139,39 @@ fun ExpenseList(
 
 @Composable
 fun ExpenseListScreen(
-    onAddClicked: () -> Unit ,
+    onAddClicked: () -> Unit,
     onStatisticsCLick:()->Unit,
     onIncomeClick:()->Unit,
     onExpenseClick:()->Unit,
+    windowSize: WindowWidthSizeClass,
     modifier: Modifier=Modifier,
     viewModel: ExpenseListViewModel= viewModel(factory =AppViewModelProvider.Factory)
 ){
-    val uiState by viewModel.uiState.collectAsState()
-    Scaffold(
-        bottomBar = {
-            BottomBar(
-                modifier=Modifier.fillMaxWidth(),
-                onStatisticsCLick = onStatisticsCLick,
-                onIncomeClick = onIncomeClick,
-                onExpenseClick = onExpenseClick
-            )
-        },
-        floatingActionButton = {
-            LargeFloatingActionButton(
-                shape = CircleShape,
-                onClick = {
-                    onAddClicked()
-                }
-            ) {
-                Icon(Icons.Filled.Add, "Add new Expense")
-            }
-        }
+
+    DynamicMenu(
+        onStatisticsCLick = onStatisticsCLick,
+        onIncomeClick = onIncomeClick,
+        onExpenseClick = onExpenseClick,
+        windowSize = windowSize
     ) {
-        ExpenseList( list =uiState.expenses, modifier = modifier.padding(it) )
+        val uiState by viewModel.uiState.collectAsState()
+        Scaffold(
+            floatingActionButton = {
+                LargeFloatingActionButton(
+                    shape = CircleShape,
+                    onClick = {
+                        onAddClicked()
+                    },
+                    modifier = Modifier.padding(it)
+                ) {
+                    Icon(Icons.Filled.Add, "Add new Expense")
+                }
+            }
+        ) {
+            ExpenseList( list =uiState.expenses, modifier = modifier.padding(it) )
+        }
     }
+
     
 }
 

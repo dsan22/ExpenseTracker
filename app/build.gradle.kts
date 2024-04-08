@@ -70,7 +70,7 @@ dependencies {
 
     implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-
+    implementation("androidx.compose.material3:material3-window-size-class")
     //Room
     implementation("androidx.room:room-runtime:${rootProject.extra["room_version"]}")
     ksp("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
@@ -78,6 +78,8 @@ dependencies {
 
     //Charts
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+
 
 }
 

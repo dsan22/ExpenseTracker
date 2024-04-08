@@ -4,11 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import rs.ac.ni.pmf.android.expensetracker.data.repository.ExpenseRepository
 import rs.ac.ni.pmf.android.expensetracker.data.repository.IncomeRepository
-import rs.ac.ni.pmf.android.expensetracker.data.repository.OfflineIncomeRepository
-import rs.ac.ni.pmf.android.expensetracker.model.Category
-import rs.ac.ni.pmf.android.expensetracker.model.Expense
 import rs.ac.ni.pmf.android.expensetracker.model.Income
 import java.text.DateFormat
 import java.util.Calendar
@@ -50,7 +46,7 @@ class IncomeEntryViewModel(private val incomeRepository: IncomeRepository) : Vie
             )
     }
 
-    suspend fun saveExpense() {
+    suspend fun saveIncome() {
         if (validateInput()) {
             incomeRepository.insertIncome(incomeUiState.incomeDetails.toIncome())
         }
