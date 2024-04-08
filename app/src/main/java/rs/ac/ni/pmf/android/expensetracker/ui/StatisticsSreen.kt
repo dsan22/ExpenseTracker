@@ -72,16 +72,15 @@ fun LineGraph(
         factory = { context ->
             val chart = BarChart(context)  // Initialise the chart
 
-
             val colors = yData.map { if (it < 0) Color.RED else Color.CYAN }
-            val absYData=yData.map { it-> abs(it) }
+            val absYData=yData.map {  abs(it) }
             val entries: List<BarEntry> = xData.zip(absYData) { x, y -> BarEntry(x.toFloat(), y.toFloat()) }
             val dataSet = BarDataSet(entries, dataLabel).apply {
-                //setDrawValues(false)
-                this.valueTextSize=13f
+
+                this.valueTextSize=15f
                 this.colors = colors
 
-            }  // Create a dataset of entries
+            }
             chart.data = BarData(dataSet)  // Pass the dataset to the chart
 
             //Styling
@@ -127,12 +126,9 @@ fun StatisticsScreen(
 
     for ((key, value) in expenseData) {
         if (difMap.containsKey(key)) {
-            Log.d("myTest",key.toString())
-            Log.d("myTest", difMap[key].toString())
             difMap[key] = difMap[key]!! - value
-            Log.d("myTest", difMap[key].toString())
         } else {
-            difMap[key] = value
+            difMap[key] = -value
         }
     }
     val xDiffData=difMap.keys.toList()
@@ -152,7 +148,7 @@ fun StatisticsScreen(
         }
     ) {
         Column(
-            modifier = Modifier.verticalScroll(rememberScrollState())
+            modifier = Modifier.verticalScroll(rememberScrollState()).padding(it)
         )  {
             if(xIncomeData.isNotEmpty()&&yIncomeData.isNotEmpty()){
                 Text(
@@ -161,7 +157,7 @@ fun StatisticsScreen(
                     fontSize = 23.sp,
                     text = "Income")
                 LineGraph(xData =xIncomeData, yData = yIncomeData , dataLabel ="", modifier = Modifier
-                    .padding(it)
+                    .padding(8.dp)
                     .height(300.dp) )
             }
             if(xExpenseData.isNotEmpty()&&yExpenseData.isNotEmpty()){
@@ -171,7 +167,7 @@ fun StatisticsScreen(
                     fontSize = 23.sp,
                     text = "Expenses")
                 LineGraph(xData =xExpenseData, yData = yExpenseData , dataLabel ="", modifier = Modifier
-                    .padding(it)
+                    .padding(8.dp)
                     .height(300.dp) )
             }
             if(xDiffData.isNotEmpty()&&yDiffData.isNotEmpty()&&difCalculated){
@@ -181,7 +177,7 @@ fun StatisticsScreen(
                     fontSize = 23.sp,
                     text = "Difference in income and expenses")
                 LineGraph(xData =xDiffData, yData = yDiffData , dataLabel ="", modifier = Modifier
-                    .padding(it)
+                    .padding(8.dp)
                     .height(300.dp) )
             }
         }
